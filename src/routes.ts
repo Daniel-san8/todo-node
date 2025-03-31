@@ -1,7 +1,8 @@
 import { Router } from "express";
+import TaskRepositories from "./repositories/Task.Repositories";
 
 const router = Router();
 
-router.get("tasks", () => console.log("opa"));
+router.get("tasks", TaskRepositories.FindAllTasks);
 
 export default router;
