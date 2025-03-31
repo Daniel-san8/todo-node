@@ -1,0 +1,10 @@
+{
+  "name": "todo-node",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^22.13.14",
+    "ts-node": "^10.9.2"
+  }
+}
