@@ -3,7 +3,7 @@ import TaskRepositories from "../repositories/Task.Repositories";
 
 class TasksController {
     getTasks (request: Request, response: Response) {
-        TaskRepositories.FindAllTasks(request, response); 
+        TaskRepositories.FindAllTasks(request, response);
     }
 }
 
