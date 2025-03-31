@@ -1,6 +1,8 @@
+import { Request, Response } from "express";
+
 class TaskRepositories {
-    FindAllTasks () {
-        console.log("opaa")
+    FindAllTasks (request: Request, response: Response) {
+        response.status(200).json({ message: "FUNCIONOU CARA!!" })
     }
 }
 

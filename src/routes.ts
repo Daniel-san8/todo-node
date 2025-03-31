@@ -1,8 +1,8 @@
 import { Router } from "express";
-import TaskRepositories from "./repositories/Task.Repositories";
+import TasksController from "./controllers/Tasks.Controller";
 
 const router = Router();
 
-router.get("tasks", TaskRepositories.FindAllTasks);
+router.get("/tasks", TasksController.getTasks);
 
 export default router;
