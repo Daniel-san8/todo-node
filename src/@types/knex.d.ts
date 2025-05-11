@@ -7,5 +7,10 @@ declare module 'knex/types/tables' {
       description: string;
       author_id: string;
     };
+
+    users: {
+      name: string;
+      password: string;
+    };
   }
 }
