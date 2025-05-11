@@ -9,7 +9,7 @@ export const configKnex: Knex.Config = {
   useNullAsDefault: true,
   pool: {
     afterCreate: (conn: any, done: any) => {
-      conn.run('PRAGMA foreign_keys = ON', done); // 🔥 isso é necessário!
+      conn.run('PRAGMA foreign_keys = ON', done);
     },
   },
   migrations: {
