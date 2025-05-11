@@ -13,7 +13,8 @@
   "main": "index.js",
   "devDependencies": {
     "@types/node": "^22.15.17",
-    "tsc": "^2.0.4"
+    "tsc": "^2.0.4",
+    "tsx": "^4.19.4"
   },
   "scripts": {
     "dev": "tsx watch src/routes/server.ts",

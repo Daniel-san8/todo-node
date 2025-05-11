@@ -13,7 +13,7 @@ const _env = envSchema.safeParse(process.env);
 
 if (!_env.success) {
   console.error('ERRO NAS VARIÁVEIS', _env.error.format());
-  throw new Error('ERRO: ', _env.error);
+  throw new Error('ERRO');
 }
 
 export const env = _env.data;
