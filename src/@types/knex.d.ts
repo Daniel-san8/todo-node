@@ -11,6 +11,7 @@ declare module 'knex/types/tables' {
     users: {
       name: string;
       password: string;
+      author_id: string;
     };
   }
 }

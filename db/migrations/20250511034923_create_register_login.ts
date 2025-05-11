@@ -4,6 +4,7 @@ export async function up(knex: Knex): Promise<void> {
   await knex.schema.createTable('users', (table) => {
     table.string('author_name').notNullable();
     table.text('password');
+    table.uuid('author_id').primary();
   });
 }
 

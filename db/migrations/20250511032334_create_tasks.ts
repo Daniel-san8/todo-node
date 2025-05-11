@@ -6,7 +6,12 @@ export async function up(knex: Knex): Promise<void> {
     table.string('name').notNullable();
     table.timestamp('created_at').defaultTo(knex.fn.now()).notNullable();
     table.text('description').notNullable();
-    table.uuid('author_id');
+    table
+      .uuid('author_id')
+      .notNullable()
+      .references('author_id')
+      .inTable('users')
+      .onDelete('CASCADE');
   });
 }
 
