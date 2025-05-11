@@ -9,6 +9,10 @@ export const app = fastify();
 app.register(fastifyCookie);
 app.register(fastifyJwt, {
   secret: 'chavejwt',
+  cookie: {
+    cookieName: 'token',
+    signed: false,
+  },
 });
 
 app.register(usersRoutes, {

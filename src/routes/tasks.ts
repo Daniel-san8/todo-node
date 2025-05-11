@@ -1,12 +1,15 @@
 import { FastifyInstance } from 'fastify';
-import knex from 'knex';
+import { knex } from './database';
 import { randomUUID } from 'node:crypto';
 import { z } from 'zod';
 
 export default async function tasksRoutes(app: FastifyInstance) {
-  app.get('/', async (req, reply) => {
+  app.get('/', async (_req, reply) => {
+    const allTaks = await knex('tasks').select('*');
+
     reply.status(200).send({
       message: 'Tudo correto!!',
+      tasks: allTaks,
     });
   });
 
@@ -26,26 +29,23 @@ export default async function tasksRoutes(app: FastifyInstance) {
       });
 
       const { name, description } = bodyFormat.parse(req.body);
-      const author_id = req.cookies.author_id;
-
-      if (!author_id) {
-        return reply.status(401).send({
-          error: 'Usuário não autorizado',
-        });
-      }
 
       if (!name || !description) {
         return reply.status(400).send({
           error: 'Requisição inválida!',
         });
       }
-
+      const decoded = await req.jwtVerify<{ author_id: string }>();
+      if (!decoded.author_id)
+        return reply.status(401).send({ error: 'Usuário não autorizado!' });
+      const author_id_decoded = decoded.author_id;
+      console.log(decoded);
       await knex('tasks').insert({
         id: randomUUID(),
-        author_id,
+        author_id: author_id_decoded,
         name,
         description,
-        created_at: new Date(),
+        created_at: new Date().toISOString(),
       });
 
       reply.status(201).send({

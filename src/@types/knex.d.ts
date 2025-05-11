@@ -9,7 +9,7 @@ declare module 'knex/types/tables' {
     };
 
     users: {
-      name: string;
+      author_name: string;
       password: string;
       author_id: string;
     };

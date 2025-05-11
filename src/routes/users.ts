@@ -1,6 +1,6 @@
 import { FastifyInstance } from 'fastify';
 import bcrypt from 'bcrypt';
-import knex from 'knex';
+import { knex } from './database';
 import { z } from 'zod';
 import { randomUUID } from 'node:crypto';
 
@@ -13,7 +13,7 @@ export default async function usersRoutes(app: FastifyInstance) {
 
   app.post('/register', async (req, reply) => {
     const schemaBodyUsers = z.object({
-      author: z.string().max(45),
+      author_name: z.string().max(45),
       password: z
         .string()
         .min(8)
@@ -22,15 +22,15 @@ export default async function usersRoutes(app: FastifyInstance) {
         .regex(/[^a-zA-Z0-9]/),
     });
 
-    const { author, password } = schemaBodyUsers.parse(req.body);
+    const { author_name, password } = schemaBodyUsers.parse(req.body);
 
-    if (!author || !password) {
+    if (!author_name || !password) {
       return reply.status(400).send({
         error: 'Campos inválidos',
       });
     }
 
-    const existingUser = await knex('users').where({ author }).first();
+    const existingUser = await knex('users').where({ author_name }).first();
     if (existingUser) {
       return reply.status(400).send({
         error: 'Usuário já existe',
@@ -41,7 +41,7 @@ export default async function usersRoutes(app: FastifyInstance) {
 
     const [newUser] = await knex('users')
       .insert({
-        author,
+        author_name,
         password: passwordHash,
         author_id: randomUUID(),
       })
@@ -54,8 +54,9 @@ export default async function usersRoutes(app: FastifyInstance) {
 
     reply
       .setCookie('token', token, {
+        path: '/',
         httpOnly: true,
-        secure: true,
+        secure: false,
         sameSite: 'strict',
       })
       .status(201)
