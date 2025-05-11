@@ -1,21 +1,27 @@
 {
+  "dependencies": {
+    "@fastify/cookie": "^11.0.2",
+    "dotenv": "^16.5.0",
+    "fastify": "^5.3.2",
+    "knex": "^3.1.0",
+    "sqlite3": "^5.1.7",
+    "typescript": "^5.8.3",
+    "zod": "^3.24.4"
+  },
   "name": "todo-node",
   "version": "1.0.0",
   "main": "index.js",
-  "license": "MIT",
-  "scripts": {
-    "dev": "npx nodemon --ext ts --exec ts-node src/index.ts"
-  },
   "devDependencies": {
-    "@types/express": "^5.0.1",
-    "@types/node": "^22.13.14",
-    "@types/pg": "^8.11.11",
-    "nodemon": "^3.1.9",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.8.2"
+    "@types/node": "^22.15.17",
+    "tsc": "^2.0.4"
   },
-  "dependencies": {
-    "express": "^4.21.2",
-    "pg": "^8.14.1"
-  }
+  "scripts": {
+    "dev": "tsx watch src/routes/server.ts",
+    "knex": "tsx ./node_modules/knex/bin/cli.js",
+    "build": "tsup src"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
 }
