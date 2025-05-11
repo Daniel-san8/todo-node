@@ -26,6 +26,13 @@ export default async function tasksRoutes(app: FastifyInstance) {
       });
 
       const { name, description } = bodyFormat.parse(req.body);
+      const author_id = req.cookies.author_id;
+
+      if (!author_id) {
+        return reply.status(401).send({
+          error: 'Usuário não autorizado',
+        });
+      }
 
       if (!name || !description) {
         return reply.status(400).send({
@@ -35,7 +42,7 @@ export default async function tasksRoutes(app: FastifyInstance) {
 
       await knex('tasks').insert({
         id: randomUUID(),
-        author_id: randomUUID(),
+        author_id,
         name,
         description,
         created_at: new Date(),
