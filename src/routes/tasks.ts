@@ -4,13 +4,23 @@ import { randomUUID } from 'node:crypto';
 import { z } from 'zod';
 
 export default async function tasksRoutes(app: FastifyInstance) {
-  app.get('/', async (_req, reply) => {
-    const allTaks = await knex('tasks').select('*');
+  app.get('/', async (req, reply) => {
+    try {
+      const decoded = await req.jwtVerify<{ author_id: string }>();
 
-    reply.status(200).send({
-      message: 'Tudo correto!!',
-      tasks: allTaks,
-    });
+      const allTaks = await knex('tasks')
+        .where('author_id', decoded.author_id)
+        .select('*');
+
+      reply.status(200).send({
+        message: 'Todas transações listadas!!',
+        tasks: allTaks,
+      });
+    } catch (error) {
+      reply.status(401).send({
+        error: 'Não autorizado',
+      });
+    }
   });
 
   app.post(
@@ -39,7 +49,6 @@ export default async function tasksRoutes(app: FastifyInstance) {
       if (!decoded.author_id)
         return reply.status(401).send({ error: 'Usuário não autorizado!' });
       const author_id_decoded = decoded.author_id;
-      console.log(decoded);
       await knex('tasks').insert({
         id: randomUUID(),
         author_id: author_id_decoded,
