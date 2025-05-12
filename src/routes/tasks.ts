@@ -89,7 +89,7 @@ export default async function tasksRoutes(app: FastifyInstance) {
         console.log('cron iniciado');
       }
 
-      const [task] = await knex('tasks')
+      await knex('tasks')
         .insert({
           id: randomUUID(),
           author_id: author_id_decoded,
@@ -100,7 +100,6 @@ export default async function tasksRoutes(app: FastifyInstance) {
           created_at: new Date().toISOString(),
         })
         .returning('*');
-      console.log(task.author_id);
       reply.status(201).send({
         message: 'Tarefa criada com sucesso!',
       });
