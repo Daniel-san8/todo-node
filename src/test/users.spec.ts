@@ -41,4 +41,28 @@ describe('will check all user routes', () => {
       })
       .expect(200);
   });
+
+  it('check all users in returning all users', async () => {
+    await request(app.server).post('/users/register').send({
+      author_name: 'Usuário de test',
+      password: 'Senha@123',
+    });
+
+    const loginResponse = await request(app.server)
+      .post('/users/login')
+      .send({
+        name: 'Usuário de test',
+        password: 'Senha@123',
+      })
+      .expect(200);
+
+    const cookieUser = loginResponse.get('Set-Cookie');
+
+    const users = await request(app.server)
+      .get('/users')
+      .set('Cookie', cookieUser ? cookieUser : []);
+
+    expect(users.body).toHaveProperty('users');
+    expect(Array.isArray(users.body.users)).toBe(true);
+  });
 });
