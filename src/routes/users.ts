@@ -3,14 +3,9 @@ import bcrypt from 'bcrypt';
 import { knex } from './database';
 import { z } from 'zod';
 import { randomUUID } from 'node:crypto';
+import verifyTokenJwt from '../middleware/verify-token-jwt';
 
 export default async function usersRoutes(app: FastifyInstance) {
-  app.setErrorHandler((_error, _req, reply) => {
-    reply.status(500).send({
-      error: 'ERRO NA API',
-    });
-  });
-
   app.post('/login', async (req, reply) => {
     try {
       const schemaBody = z.object({
@@ -58,14 +53,20 @@ export default async function usersRoutes(app: FastifyInstance) {
     }
   });
 
-  app.get('/', async (_req, reply) => {
-    const users = await knex('users').select('*');
+  app.get(
+    '/',
+    {
+      preHandler: [verifyTokenJwt],
+    },
+    async (_req, reply) => {
+      const users = await knex('users').select('*');
 
-    reply.status(200).send({
-      message: 'Todos os usuários retornados',
-      users,
-    });
-  });
+      reply.status(200).send({
+        message: 'Todos os usuários retornados',
+        users,
+      });
+    }
+  );
 
   app.post('/register', async (req, reply) => {
     const schemaBodyUsers = z.object({
