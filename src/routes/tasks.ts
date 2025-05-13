@@ -10,6 +10,23 @@ export default async function tasksRoutes(app: FastifyInstance) {
     '/',
     {
       preHandler: [verifyTokenJwt],
+      schema: {
+        response: {
+          200: {
+            type: 'object',
+            properties: {
+              message: { type: 'string' },
+              tasks: { type: 'array', items: { type: 'object' } },
+            },
+          },
+          401: {
+            type: 'object',
+            properties: {
+              error: { type: 'string' },
+            },
+          },
+        },
+      },
     },
     async (req, reply) => {
       try {
@@ -35,6 +52,31 @@ export default async function tasksRoutes(app: FastifyInstance) {
     '/',
     {
       preHandler: [verifyTokenJwt],
+      schema: {
+        body: {
+          type: 'object',
+          properties: {
+            name: { type: 'string' },
+            description: { type: 'string' },
+            date_finish: { type: 'string', format: 'date-time' },
+          },
+          required: ['name', 'description'],
+        },
+        response: {
+          201: {
+            type: 'object',
+            properties: {
+              message: { type: 'string' },
+            },
+          },
+          401: {
+            type: 'object',
+            properties: {
+              error: { type: 'string' },
+            },
+          },
+        },
+      },
     },
     async (req, reply) => {
       try {
